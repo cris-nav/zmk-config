@@ -1,0 +1,119 @@
+/*
+ * Matrix key positions for 36-key split keyboard (3x5 + 3 thumbs):
+ *
+ *       Left Hand                          Right Hand
+ * ┌────┬────┬────┬────┬────┐        ┌────┬────┬────┬────┬────┐
+ * │ 00 │ 01 │ 02 │ 03 │ 04 │        │ 05 │ 06 │ 07 │ 08 │ 09 │  <- Top Row
+ * ├────┼────┼────┼────┼────┤        ├────┼────┼────┼────┼────┤
+ * │ 10 │ 11 │ 12 │ 13 │ 14 │        │ 15 │ 16 │ 17 │ 18 │ 19 │  <- Home Row
+ * ├────┼────┼────┼────┼────┤        ├────┼────┼────┼────┼────┤
+ * │ 20 │ 21 │ 22 │ 23 │ 24 │        │ 25 │ 26 │ 27 │ 28 │ 29 │  <- Bottom Row
+ * └────┴────┴────┴────┴────┘        └────┴────┴────┴────┴────┘
+ *           ┌────┬────┬────┐        ┌────┬────┬────┐
+ *           │ 30 │ 31 │ 32 │        │ 33 │ 34 │ 35 │            <- Thumb Cluster
+ *           └────┴────┴────┘        └────┴────┴────┘
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+
+// Layer definitions
+#define DEF 0
+#define NAV 1
+#define SYM 2
+#define NUM 3
+#define FUN 4
+
+/ {
+    // COMBOS
+    combos {
+        compatible = "zmk,combos";
+
+        // ESC Combo: Pressing K + H (positions 25 and 26 in a 3x5+3 layout)
+        combo_esc {
+            timeout-ms = <35>;
+            key-positions = <25 26>;
+            bindings = <&kp ESC>;
+            require-prior-idle-ms = <125>;
+            layers = <DEF>;
+        };
+    };
+
+    // CUSTOM BEHAVIORS
+    behaviors {
+        hm: home_row_mods {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOME_ROW_MODS";
+            #binding-cells = <2>;
+            tapping-term-ms = <180>;
+            quick-tap-ms = <150>;
+            flavor = "balanced";
+            bindings = <&kp>, <&kp>;
+        };
+
+        lt_p: layer_tap_thumb {
+            compatible = "zmk,behavior-hold-tap";
+            label = "LAYER_TAP_THUMB";
+            #binding-cells = <2>;
+            tapping-term-ms = <170>;
+            quick-tap-ms = <150>;
+            flavor = "tap-preferred";
+            bindings = <&mo>, <&kp>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        // LAYER 0: DEFAULT (Colemak-DH)
+        default_layer {
+            bindings = <
+                &kp Q        &kp W         &kp F          &kp P         &kp B            &kp J           &kp L           &kp U        &kp Y        &kp SQT
+                &hm LGUI A   &hm LALT R    &hm LCTRL S    &hm LSHFT T   &kp G            &kp M           &hm RSHFT N     &hm RCTRL E  &hm RALT I   &hm RGUI O
+                &kp Z        &kp X         &kp C          &kp D         &kp V            &kp K           &kp H           &kp COMMA    &kp DOT      &kp SEMI
+                                           &none        &lt_p FUN TAB &lt_p NAV BSPC   &lt_p SYM ENTER &lt_p NUM SPACE &none
+            >;
+        };
+
+        // LAYER 1: NAVIGATION (NAV)
+        nav_layer {
+            bindings = <
+                &trans       &trans        &trans         &trans        &trans           &trans          &kp HOME        &kp UP       &kp END      &kp PG_UP
+                &kp LGUI     &kp LALT      &kp LCTRL      &kp LSHFT     &trans           &trans          &kp LEFT        &kp DOWN     &kp RIGHT    &kp PG_DN
+                &trans       &trans        &trans         &trans        &trans           &trans          &trans          &trans       &trans       &trans
+                                           &trans         &trans        &trans           &kp DEL         &trans          &trans
+            >;
+        };
+
+        // LAYER 2: SYMBOLS (SYM)
+        sym_layer {
+            bindings = <
+                &kp EXCL     &kp AT        &kp LBRC       &kp RBRC      &kp PIPE         &kp PLUS        &kp AMPS        &kp ASTRK    &kp LPAR     &kp RPAR
+                &kp HASH     &kp DLLR      &kp LBKT       &kp RBKT      &kp GRAVE        &kp MINUS       &kp BSLH        &kp FSLH     &kp EQUAL    &kp COLON
+                &kp PRCNT    &kp CARET     &kp LT         &kp GT        &kp TILDE        &kp UNDER       &kp DQT         &kp QMARK    &kp COMMA    &kp DOT
+                                           &trans         &trans        &trans           &trans          &trans          &trans
+            >;
+        };
+
+        // LAYER 3: NUMPAD (NUM)
+        num_layer {
+            bindings = <
+                &trans       &trans        &trans         &trans        &trans           &kp PLUS        &kp N7          &kp N8       &kp N9       &kp ASTRK
+                &kp LGUI     &kp LALT      &kp LCTRL      &kp LSHFT     &trans           &kp MINUS       &kp N4          &kp N5       &kp N6       &kp FSLH
+                &trans       &trans        &trans         &trans        &trans           &kp EQUAL       &kp N1          &kp N2       &kp N3       &kp DOT
+                                           &trans         &trans        &trans           &kp N0          &trans          &trans
+            >;
+        };
+
+        // LAYER 4: FUNCTION KEYS (FUN)
+        fun_layer {
+            bindings = <
+                &kp F1       &kp F2        &kp F3         &kp F4        &bt BT_SEL 0     &trans          &trans          &trans       &trans       &trans
+                &kp F5       &kp F6        &kp F7         &kp F8        &bt BT_SEL 1     &trans          &kp RSHFT       &kp RCTRL    &kp RALT     &kp RGUI
+                &kp F9       &kp F10       &kp F11        &kp F12       &bt BT_CLR       &trans          &trans          &trans       &trans       &trans
+                                           &trans         &trans        &trans           &trans          &trans          &trans
+            >;
+        };
+    };
+};
