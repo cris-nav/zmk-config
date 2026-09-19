@@ -26,6 +26,9 @@
 #define FUN 4
 
 / {
+    chosen {
+        zmk,matrix_transform = &five_column_transform;
+    };
     // COMBOS
     combos {
         compatible = "zmk,combos";
