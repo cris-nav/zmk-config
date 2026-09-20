@@ -1,5 +1,5 @@
 /*
- * Matrix key positions for 36-key split keyboard (3x5 + 3 thumbs):
+ * Matrix key positions for 36-key split keyboard (3x5 + 3 thumbs) for Chocofi/Corne
  *
  *       Left Hand                          Right Hand
  * ┌────┬────┬────┬────┬────┐        ┌────┬────┬────┬────┬────┐
@@ -14,10 +14,10 @@
  *           └────┴────┴────┘        └────┴────┴────┘
  */
 
-#include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/pointing.h>
+#include <behaviors.dtsi>               // Key behavior rules in ZMK (types of key presses)
+#include <dt-bindings/zmk/keys.h>       // All standard keyboard keys
+#include <dt-bindings/zmk/bt.h>         // Bluetooth management commands
+#include <dt-bindings/zmk/pointing.h>   // Mouse pointer and cursor emulation
 
 // Layer definitions
 #define DEF 0
@@ -27,14 +27,16 @@
 #define FUN 4
 
 / {
+    // Sets layout to 36 keys (5 columns per side)
     chosen {
         zmk,matrix_transform = &five_column_transform;
     };
+
     // COMBOS
     combos {
         compatible = "zmk,combos";
 
-        // ESC Combo: Pressing K + H (positions 25 and 26 in a 3x5+3 layout)
+        // ESC Combo: Pressing K + H (positions 25 and 26)
         combo_esc {
             timeout-ms = <35>;
             key-positions = <25 26>;
@@ -76,7 +78,7 @@
                 &kp Q        &kp W         &kp F          &kp P         &kp B            &kp J           &kp L           &kp U        &kp Y        &kp SQT
                 &hm LGUI A   &hm LALT R    &hm LCTRL S    &hm LSHFT T   &kp G            &kp M           &hm RSHFT N     &hm RCTRL E  &hm RALT I   &hm RGUI O
                 &kp Z        &kp X         &kp C          &kp D         &kp V            &kp K           &kp H           &kp COMMA    &kp DOT      &kp SEMI
-                                           &none        &lt_p FUN TAB &lt_p NAV BSPC   &lt_p SYM ENTER &lt_p NUM SPACE &none
+                                           &none          &lt_p FUN TAB &lt_p NAV BSPC   &lt_p SYM ENTER &lt_p NUM SPACE &none
             >;
         };
 
@@ -87,8 +89,8 @@
                 &kp LGUI        &kp LALT        &kp LCTRL     &kp LSHFT        &mkp RCLK     &trans    &kp HOME  &kp PG_UP &kp PG_DN  &kp END
                 &trans          &trans          &trans        &trans           &trans        &trans    &trans    &trans    &trans     &trans
                                                 &trans        &trans           &trans        &kp BSPC  &kp DEL   &trans
-    >;
-};
+            >;
+        };
 
         // LAYER 2: SYMBOLS (SYM)
         sym_layer {
