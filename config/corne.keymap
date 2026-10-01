@@ -52,9 +52,9 @@
             compatible = "zmk,behavior-hold-tap";
             label = "HOME_ROW_MODS";
             #binding-cells = <2>;
-            tapping-term-ms = <180>;
-            quick-tap-ms = <150>;
-            flavor = "balanced";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <175>;
+            flavor = "tap-preferred";
             bindings = <&kp>, <&kp>;
         };
 
